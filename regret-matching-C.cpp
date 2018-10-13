@@ -26,20 +26,6 @@ int get_action(vector <double> &strategy, int T)
     return action;
 }
 
-void get_strategy(vector <double> &regret, vector <double> &strategy, int T)
-{
-    double total_regret = 0;
-    for (int k = 0; k < T; k++)
-        total_regret += max(0.0, regret[k]);
-    for (int k = 0; k < T; k++) {
-        strategy[k] = max(0.0, regret[k]);
-        if (total_regret < EPS)
-            strategy[k] = 1/T;
-        else
-            strategy[k] /= total_regret;
-    }
-}
-
 void normalize_strategy(vector <double> &strategy, int T)
 {
     double cumulative = 0;
@@ -49,28 +35,44 @@ void normalize_strategy(vector <double> &strategy, int T)
         strategy[k] /= cumulative;
 }
 
+void get_strategy(  vector <double> &regret,
+                    vector <double> &strategy,
+                    int num_actions )
+{
+    double total_regret = 0;
+    for (int k = 0; k < num_actions; k++)
+        total_regret += max(0.0, regret[k]);
+    for (int k = 0; k < num_actions; k++) {
+        strategy[k] = max(0.0, regret[k]);
+        if (total_regret < EPS)
+            strategy[k] = 1/num_actions;
+        else
+            strategy[k] /= total_regret;
+    }
+}
+
 void proc_c(    vector<vector <double>> &utility,   // matriz de pagos
                 vector <double> &s1,                // vector de estrategias del jugador 1
                 vector <double> &s2,                // vector de estrategias del jugador 2
                 int iterations)                     // numero de iteraciones
 {
     int S1 = utility.size(), S2 = utility[0].size();    // numero de acciones de cada jugador
-    vector <double> cumulative_regret1(S1, 0);          // regret acumulado del jugador 1
-    vector <double> cumulative_regret2(S2, 0);          // regret acumulado del jugador 2
+    vector <double> un_regret1(S1, 0);          // regret acumulado del jugador 1
+    vector <double> un_regret2(S2, 0);          // regret acumulado del jugador 2
     vector <double> strategy1(S1), strategy2(S2);       // estrategia de la iteraccion respectiva
     s1.resize(S1, 0), s2.resize(S2, 0);                 // inicializar los vectores estrategias
 
     for (int t = 0; t < iterations; t++) {
-        get_strategy(cumulative_regret1, strategy1, S1);    // estrategia del jugador 1
-        get_strategy(cumulative_regret2, strategy2, S2);    // estrategia del jugador 2
+        get_strategy(un_regret1, strategy1, S1);    // estrategia del jugador 1
+        get_strategy(un_regret2, strategy2, S2);    // estrategia del jugador 2
         int i = get_action(strategy1, S1);                  // accion del jugador 1
         int j = get_action(strategy2, S2);                  // accion del jugador 2
 
         // Actualizar los regrets acumulados
         for (int k = 0; k < S1; k++)
-            cumulative_regret1[k] +=  utility[k][j] - utility[i][j];
+            un_regret1[k] +=  utility[k][j] - utility[i][j];
         for (int k = 0; k < S2; k++)
-            cumulative_regret2[k] += -utility[i][k] + utility[i][j];
+            un_regret2[k] += -utility[i][k] + utility[i][j];
 
         // Actualizar las estrategias acumuladas
         for (int k = 0; k < S1; k++)
