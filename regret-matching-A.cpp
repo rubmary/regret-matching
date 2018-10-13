@@ -6,11 +6,13 @@
 using namespace std;
 #define EPS 1e-6
 
-double get_random() {
+double get_random()
+{
     return rand() / ((double) RAND_MAX);
 }
 
-int get_action(vector <double> &strategy, int T) {
+int get_action(vector <double> &strategy, int T)
+{
     double r = get_random();
     T = strategy.size();
     int action = 0;
@@ -44,7 +46,8 @@ void get_strategy(  vector < vector <double> > &regret,
         strategy[prev] -= strategy[k];
     }
 }
-void normalize_strategy(vector <double> &strategy, int T) {
+void normalize_strategy(vector <double> &strategy, int T)
+{
     double cumulative = 0;
     for (int k = 0; k < T; k++)
         cumulative += strategy[k];

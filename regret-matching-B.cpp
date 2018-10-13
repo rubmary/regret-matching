@@ -8,11 +8,13 @@ using namespace Eigen;
 using namespace std;
 #define EPS 1e-6
 
-double get_random() {
+double get_random()
+{
     return rand() / ((double) RAND_MAX);
 }
 
-int get_action(vector <double> &strategy, int T) {
+int get_action(vector <double> &strategy, int T)
+{
     double r = get_random();
     T = strategy.size();
     int action = 0;
@@ -68,19 +70,7 @@ void get_strategy(  vector < vector <double> > &regret,
     normalize_strategy(strategy, num_actions);
 }
 
-double get_parameter(vector <vector <double> > &utility, int S1, int S2)
-{
-    double M1 = 0, M2 = 0;
-    for (int i = 0; i < S1; i++){
-        for (int j = 0; j < S2; j++){
-            M1 = max(M1,  utility[i][j]);
-            M2 = max(M2, -utility[i][j]);
-        }
-    }
-    return 2*max(M1*(S1-1), M2*(S2-1)) + 0.001;
-}
-
-void proc_a(    vector<vector <double>> &utility,   // matriz de pagos
+void proc_b(    vector<vector <double>> &utility,   // matriz de pagos
                 vector <double> &s1,                // vector de estrategias del jugador 1
                 vector <double> &s2,                // vector de estrategias del jugador 2
                 int iterations)                     // numero de iteraciones
@@ -92,7 +82,6 @@ void proc_a(    vector<vector <double>> &utility,   // matriz de pagos
     s1.resize(S1, 0), s2.resize(S2, 0);                 // inicializar los vectores estrategias
     cum_regret1.resize(S1, vector <double> (S1, 0));
     cum_regret2.resize(S2, vector <double> (S2, 0));    
-    double m = get_parameter(utility, S1, S2);
 
     int prev1 = 0, prev2 = 0;
     for (int t = 0; t < iterations; t++) {
@@ -121,7 +110,8 @@ void proc_a(    vector<vector <double>> &utility,   // matriz de pagos
     normalize_strategy(s2, S2);                             // normalizar estrategia jugador 2
 }
 
-int main() {
+int main()
+{
     vector <vector <double>> A;
     int S1, S2;
     cin >> S1 >> S2;
@@ -130,7 +120,7 @@ int main() {
         for (int j = 0; j < S2; j++)
             cin >> A[i][j];
     vector <double> s1, s2;
-    proc_a(A, s1, s2, 1000000);
+    proc_b(A, s1, s2, 1000000);
     for (int i = 0; i < S1; i++)
         cout << fixed << setprecision(3) << s1[i] << ' ';
     cout << endl;
