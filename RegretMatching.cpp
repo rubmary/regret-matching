@@ -1,9 +1,7 @@
 #include "RegretMatching.h"
-#include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <vector>
-#include <iomanip>
 #include <Eigen/Dense>
 #define EPS 1e-6
 using namespace Eigen;
@@ -14,13 +12,16 @@ void RegretMatching::set(vector < vector <double> > &utility)
 {
     S1 = utility.size();
     S2 = utility[0].size();
-    s1.resize(S1, 0);
-    s2.resize(S2, 0);
-    regret1.resize(S1, vector <double> (S1, 0));
-    regret2.resize(S2, vector <double> (S2, 0));
-    un_regret1.resize(S1, 0);
-    un_regret1.resize(S2, 0);
+    s1 = vector <double>(S1, 0);
+    s2 = vector <double>(S2, 0);
+    strategy1 = vector <double>(S1, 0);
+    strategy2 = vector <double>(S1, 0);
+    regret1 = vector <vector <double> > (S1, vector <double> (S1, 0));
+    regret2 = vector <vector <double> > (S2, vector <double> (S2, 0));
+    un_regret1 = vector <double>(S1, 0);
+    un_regret2 = vector <double>(S2, 0);
 }
+
 double RegretMatching::get_random()
 {
     return rand() / ((double) RAND_MAX);
@@ -219,7 +220,4 @@ void RegretMatching::proc_c(    vector<vector <double>> &utility,
     }
     normalize_strategy(s1, S1);                             // normalizar estrategia jugador 1
     normalize_strategy(s2, S2);                             // normalizar estrategia jugador 2
-}
-int main() {
-
 }
