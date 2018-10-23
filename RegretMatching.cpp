@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <vector>
+#include <fstream>
 #include <Eigen/Dense>
 #define EPS 1e-6
 using namespace Eigen;
@@ -14,8 +15,8 @@ void RegretMatching::set(vector < vector <double> > &utility)
     S2 = utility[0].size();
     s1 = vector <double>(S1, 0);
     s2 = vector <double>(S2, 0);
-    strategy1 = vector <double>(S1, 0);
-    strategy2 = vector <double>(S1, 0);
+    strategy1 = vector <double> (S1, 0);
+    strategy2 = vector <double> (S1, 0);
     regret1 = vector <vector <double> > (S1, vector <double> (S1, 0));
     regret2 = vector <vector <double> > (S2, vector <double> (S2, 0));
     un_regret1 = vector <double>(S1, 0);
@@ -138,11 +139,46 @@ void RegretMatching::get_strategy(  vector <double> &regret,
     }
 }
 
+void RegretMatching::unconditional_regret(  int i,
+                                            int j,
+                                            vector <vector <double>> &utility)
+{
+    for (int k = 0; k < S1; k++)
+        un_regret1[k] +=  utility[k][j] - utility[i][j];
+    for (int k = 0; k < S2; k++)
+        un_regret2[k] += -utility[i][k] + utility[i][j];
+}
+
+void RegretMatching::print_max_regret ( int t,
+                                        ofstream &file)
+{
+    double max_regret1 = 0;
+    double max_regret2 = 0;
+    for (int k = 0; k < S1; k++)
+        max_regret1 = max(max_regret1, un_regret1[k]);
+    for (int k = 0; k < S2; k++)
+        max_regret2 = max(max_regret2, un_regret2[k]);
+
+    file << max_regret1/(t+1) << ' ' << max_regret2/(t+1) << endl;
+}
+
+void RegretMatching::update_strategies()
+{
+    // Actualizar las estrategias acumuladas
+    for (int k = 0; k < S1; k++)
+        s1[k] += strategy1[k];
+    for (int k = 0; k < S2; k++)
+        s2[k] += strategy2[k];
+}
+
 void RegretMatching::proc_a(    vector<vector <double>> &utility,
-                                int iterations)
+                                int iterations,
+                                string name = "regret_a.txt")
 {
     set(utility);
     double m = get_parameter(utility, S1, S2);
+    ofstream file(name.c_str());
+
     int prev1 = 0, prev2 = 0;
     for (int t = 0; t < iterations; t++) {
         get_strategy(regret1, strategy1, S1, m, prev1, t+1);    // estrategia del jugador 1
@@ -156,27 +192,27 @@ void RegretMatching::proc_a(    vector<vector <double>> &utility,
         for (int k = 0; k < S2; k++)
             regret2[j][k] += -utility[i][k] + utility[i][j];
 
-        // Actualizar las estrategias acumuladas
-        for (int k = 0; k < S1; k++)
-            s1[k] += strategy1[k];
-        for (int k = 0; k < S2; k++)
-            s2[k] += strategy2[k];
-
-        // Actualizar las estrategias previas
-        prev1 = i;
-        prev2 = j;
+        update_strategies();                                // actualizar las estrategias acumuladas
+        prev1 = i;                                          // estrategia previa jugador 1
+        prev2 = j;                                          // estrategia previa jugador 2
+        unconditional_regret(i, j, utility);                // regret incondicional
+        print_max_regret(t, file);                          // imprimir regret
     }
     normalize_strategy(s1, S1);                             // normalizar estrategia jugador 1
     normalize_strategy(s2, S2);                             // normalizar estrategia jugador 2
+    file.close();
 }
 
 void RegretMatching::proc_b(    vector<vector <double>> &utility,
-                                int iterations)
+                                int iterations,
+                                string name = "regret_b.txt")
 {
     set(utility);
+    ofstream file(name.c_str());
+
     for (int t = 0; t < iterations; t++) {
-        get_strategy(regret1, strategy1, S1, t+1);  // estrategia del jugador 1
-        get_strategy(regret2, strategy2, S2, t+1);  // estrategia del jugador 2
+        get_strategy(regret1, strategy1, S1, t+1);      // estrategia del jugador 1
+        get_strategy(regret2, strategy2, S2, t+1);      // estrategia del jugador 2
         int i = get_action(strategy1, S1);              // accion del jugador 1
         int j = get_action(strategy2, S2);              // accion del jugador 2
 
@@ -186,38 +222,32 @@ void RegretMatching::proc_b(    vector<vector <double>> &utility,
         for (int k = 0; k < S2; k++)
             regret2[j][k] += -utility[i][k] + utility[i][j];
 
-        // Actualizar las estrategias acumuladas
-        for (int k = 0; k < S1; k++)
-            s1[k] += strategy1[k];
-        for (int k = 0; k < S2; k++)
-            s2[k] += strategy2[k];
+        update_strategies();                            // actualizar las estrategias acumuladas
+        unconditional_regret(i, j, utility);            // regret incondicional
+        print_max_regret(t, file);                      // imprimir regret
     }
-    normalize_strategy(s1, S1);                             // normalizar estrategia jugador 1
-    normalize_strategy(s2, S2);                             // normalizar estrategia jugador 2
+
+    normalize_strategy(s1, S1);                         // normalizar estrategia jugador 1
+    normalize_strategy(s2, S2);                         // normalizar estrategia jugador 2
 }
 
 void RegretMatching::proc_c(    vector<vector <double>> &utility,
-                                int iterations)
+                                int iterations,
+                                string name = "regret_c.txt")
 {
     set(utility);
+    ofstream file(name.c_str());
+
     for (int t = 0; t < iterations; t++) {
-        get_strategy(un_regret1, strategy1, S1);    // estrategia del jugador 1
-        get_strategy(un_regret2, strategy2, S2);    // estrategia del jugador 2
+        get_strategy(un_regret1, strategy1, S1);            // estrategia del jugador 1
+        get_strategy(un_regret2, strategy2, S2);            // estrategia del jugador 2
         int i = get_action(strategy1, S1);                  // accion del jugador 1
         int j = get_action(strategy2, S2);                  // accion del jugador 2
-
-        // Actualizar los regrets acumulados
-        for (int k = 0; k < S1; k++)
-            un_regret1[k] +=  utility[k][j] - utility[i][j];
-        for (int k = 0; k < S2; k++)
-            un_regret2[k] += -utility[i][k] + utility[i][j];
-
-        // Actualizar las estrategias acumuladas
-        for (int k = 0; k < S1; k++)
-            s1[k] += strategy1[k];
-        for (int k = 0; k < S2; k++)
-            s2[k] += strategy2[k];
+        unconditional_regret(i, j, utility);                // actualizar regret incondicional
+        update_strategies();                                // actualizar estrategias acumuladas
+        print_max_regret(t, file);                          // imprimir regret en archivo
     }
     normalize_strategy(s1, S1);                             // normalizar estrategia jugador 1
     normalize_strategy(s2, S2);                             // normalizar estrategia jugador 2
+    file.close();
 }

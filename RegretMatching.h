@@ -33,6 +33,13 @@ class RegretMatching {
                         vector <double> &strategy,
                         int num_actions);
 
+
+    void unconditional_regret(  int i, int j, vector <vector <double>> &utility);
+
+    void print_max_regret(  int t, ofstream &file);
+
+    void update_strategies();
+
     int S1, S2;                                     // numero de acciones de cada jugador
     vector < vector <double> > regret1, regret2;    // regret condicional acumulado
     vector <double> un_regret1, un_regret2;         // regret incondicional acumulado
@@ -41,13 +48,16 @@ class RegretMatching {
 
 public:
     void proc_a(    vector<vector <double> > &utility,
-                    int iterations);
+                    int iterations,
+                    string name);
 
     void proc_b(    vector<vector <double> > &utility,
-                    int iterations); 
+                    int iterations,
+                    string name);
 
     void proc_c(    vector<vector <double> > &utility,
-                    int iterations);
+                    int iterations,
+                    string name);
 
     vector <double> get_strategy(int player) {
         if (player == 1)
