@@ -159,7 +159,7 @@ void RegretMatching::conditional_regret(    int i,
         regret2[j][k] += -utility[i][k] + utility[i][j];
 }
 
-void RegretMatching::print_max_regret ( int t,
+double RegretMatching::print_max_regret ( int t,
                                         ofstream &file)
 {
     double max_regret1 = 0;
@@ -170,6 +170,8 @@ void RegretMatching::print_max_regret ( int t,
         max_regret2 = max(max_regret2, un_regret2[k]);
 
     file << max_regret1/(t+1) << ' ' << max_regret2/(t+1) << endl;
+
+    return max(max_regret1/(t+1), max_regret2/(t+1));
 }
 
 void RegretMatching::update_strategies()
@@ -243,7 +245,9 @@ void RegretMatching::proc_c(    vector<vector <double>> &utility,
         int j = get_action(strategy2, S2);                  // accion del jugador 2
         unconditional_regret(i, j, utility);                // actualizar regret incondicional
         update_strategies();                                // actualizar estrategias acumuladas
-        print_max_regret(t, file);                          // imprimir regret en archivo
+        double max_regret = print_max_regret(t, file);      // imprimir regret en archivo
+        if (max_regret < EPS)
+            break;
     }
     normalize_strategy(s1, S1);                             // normalizar estrategia jugador 1
     normalize_strategy(s2, S2);                             // normalizar estrategia jugador 2

@@ -38,7 +38,7 @@ class RegretMatching {
 
     void conditional_regret(  int i, int j, vector <vector <double>> &utility);
 
-    void print_max_regret(  int t, ofstream &file);
+    double print_max_regret(  int t, ofstream &file);
 
     void update_strategies();
 
