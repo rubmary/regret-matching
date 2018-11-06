@@ -22,3 +22,5 @@ def make_plot(x):
 	else:
 		plot(regret1_c)
 		plot(regret2_c)
+	show()
+

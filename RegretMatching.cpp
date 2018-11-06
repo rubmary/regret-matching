@@ -4,7 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <Eigen/Dense>
-#define EPS 1e-6
+#define EPS 1e-3
 using namespace Eigen;
 using namespace std;
 
@@ -202,7 +202,9 @@ void RegretMatching::proc_a(    vector<vector <double>> &utility,
         prev1 = i;                                              // estrategia previa jugador 1
         prev2 = j;                                              // estrategia previa jugador 2
         unconditional_regret(i, j, utility);                    // regret incondicional
-        print_max_regret(t, file);                              // imprimir regret
+        double max_regret = print_max_regret(t, file);          // imprimir regret en archivo
+        //if (max_regret < EPS)
+        //    break;
     }
     normalize_strategy(s1, S1);                             // normalizar estrategia jugador 1
     normalize_strategy(s2, S2);                             // normalizar estrategia jugador 2
@@ -224,7 +226,9 @@ void RegretMatching::proc_b(    vector<vector <double>> &utility,
         conditional_regret(i, j, utility);              // regret condicional
         update_strategies();                            // actualizar las estrategias acumuladas
         unconditional_regret(i, j, utility);            // regret incondicional
-        print_max_regret(t, file);                      // imprimir regret
+        double max_regret = print_max_regret(t, file);  // imprimir regret en archivo
+        // if (max_regret < EPS)
+        //     break;
     }
 
     normalize_strategy(s1, S1);                         // normalizar estrategia jugador 1
@@ -246,8 +250,8 @@ void RegretMatching::proc_c(    vector<vector <double>> &utility,
         unconditional_regret(i, j, utility);                // actualizar regret incondicional
         update_strategies();                                // actualizar estrategias acumuladas
         double max_regret = print_max_regret(t, file);      // imprimir regret en archivo
-        if (max_regret < EPS)
-            break;
+        // if (max_regret < EPS)
+        //     break;
     }
     normalize_strategy(s1, S1);                             // normalizar estrategia jugador 1
     normalize_strategy(s2, S2);                             // normalizar estrategia jugador 2

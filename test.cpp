@@ -27,7 +27,7 @@ int main() {
     RegretMatching regret_matching;
     
     cout << "Procedimiento A:" << endl;
-    regret_matching.proc_a(A, 10000);
+    regret_matching.proc_a(A, 1000000);
     print_strategy(regret_matching, S1, S2);
     cout << endl;
 
