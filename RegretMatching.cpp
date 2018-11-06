@@ -150,7 +150,7 @@ void RegretMatching::unconditional_regret(  int i,
 }
 
 void RegretMatching::conditional_regret(    int i,
-                                            int j, 
+                                            int j,
                                             vector <vector <double>> &utility)
 {
     for (int k = 0; k < S1; k++)
