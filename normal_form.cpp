@@ -92,24 +92,6 @@ int main(int argc, char **argv)
 		}
 		cout << endl;
 		if (!next(s1, num1, N1))
-			break;file(argv[1]);
-	Node *root = new Node(file);
-	map <int, int> id1, id2;
-	vector <int> num1, num2;
-	int N1 = 0, N2 = 0;
-	dfs(root, id1, id2, num1, num2, N1, N2);
-	vector <int> s1(N1, 0), s2(N2, 0);
-	int k = 0;
-	while (true) {
-		while (true) {
-			double val = expected(root, id1, id2, s1, s2);
-			cout <<  val << ' ';
-			if (!next(s2, num2, N2))
-				break;
-		}
-		cout << endl;
-		if (!next(s1, num1, N1))
 			break;
-	}
 	}
 }
