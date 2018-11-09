@@ -52,6 +52,9 @@ double expected(	Node *u,
 					vector <int> &s1,
 					vector <int> &s2 )
 {
+	if (u -> is_terminal())
+		return u -> util();
+
 	if (u -> is_chance()) {
 		double ans = 0;
 		int N = u -> num_children();
@@ -63,6 +66,7 @@ double expected(	Node *u,
 		}
 		return ans;
 	}
+
 	int player  = u -> player();
 	int inf_set = u -> I();
 	Node *v;
@@ -83,6 +87,14 @@ int main(int argc, char **argv)
 	dfs(root, id1, id2, num1, num2, N1, N2);
 	vector <int> s1(N1, 0), s2(N2, 0);
 	int k = 0;
+
+	int N = 1, M = 1;
+	for (int i = 0; i < N1; i++)
+		N *= num1[i];
+	for (int i = 0; i < N2; i++)
+		M *= num2[i];
+
+	cout << N << ' ' << M << endl;
 	while (true) {
 		while (true) {
 			double val = expected(root, id1, id2, s1, s2);

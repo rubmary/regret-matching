@@ -4,7 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <Eigen/Dense>
-#define EPS 1e-3
+#define EPS 1e-4
 using namespace Eigen;
 using namespace std;
 

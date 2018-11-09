@@ -41,6 +41,7 @@ public:
 
     /**
         random
+}
         @return numero aleatorio en [0, 1]
      */
     double random();
@@ -61,6 +62,7 @@ public:
         nodo actual
 
         parametros
+}
         @k: indice del hijo buscado
 
         @return k-esimo hijo
@@ -124,4 +126,6 @@ public:
     void set_strategy(vector <double> strategy);
 
     double probability(int i);
+
+    double util();
 };

@@ -87,3 +87,7 @@ void Node::set_strategy(vector <double> strategy) {
 double Node::probability(int i) {
     return pi[i];
 }
+
+double Node::util() {
+    return utility;
+}
