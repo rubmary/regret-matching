@@ -5,7 +5,6 @@
 #include <map>
 using namespace std;
 
-
 bool next(	vector <int> &strategy,
 			vector <int> &actions,
 			int N )
