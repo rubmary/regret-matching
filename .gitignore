@@ -1,5 +1,8 @@
-blotto_game
 Eigen/
+regret/
 test
 normal_form
 behavorial_strategy
+blotto_game
+test_kuhn
+solve
