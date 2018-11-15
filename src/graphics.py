@@ -1,34 +1,8 @@
 import matplotlib.pylab as plt
 import sys
 
-# file_a = open('regret_a.txt')
-# file_b = open('regret_b.txt')
-# file_c = open('regret_c.txt')
-# lines_a = file_a.readlines()
-# lines_b = file_b.readlines()
-# lines_c = file_c.readlines()
-# regret1_a = [float(lines_a[i].split()[0]) for i in range(len(lines_a))]
-# regret2_a = [float(lines_a[i].split()[1]) for i in range(len(lines_a))]
-# regret1_b = [float(lines_b[i].split()[0]) for i in range(len(lines_b))]
-# regret2_b = [float(lines_b[i].split()[1]) for i in range(len(lines_b))]
-# regret1_c = [float(lines_c[i].split()[0]) for i in range(len(lines_c))]
-# regret2_c = [float(lines_c[i].split()[1]) for i in range(len(lines_c))]
-
-# def make_plot(x):
-# 	if (x == 'a'):
-# 		plot(regret1_a)
-# 		plot(regret2_a)
-# 	elif (x == 'b'):
-# 		plot(regret1_b)
-# 		plot(regret2_b)
-# 	else:
-# 		plot(regret1_c)
-# 		plot(regret2_c)
-# 	show()
-
-
-def make_plot(path, proc):
-	file = open(path)
+def make_plot(path_input, path_graph, proc):
+	file = open(path_input)
 	lines = file.readlines()
 	file.close()
 	regret1 = [float(lines[i].split()[0]) for i in range(len(lines))]
@@ -38,18 +12,24 @@ def make_plot(path, proc):
 	plt.xscale('log')
 	plt.plot(regret1)
 	plt.plot(regret2)
-	plt.show(block=False)
+	plt.ylabel('Regret (max)')
+	plt.xlabel('Iteraciones')
+	plt.savefig(path_graph)
 
 if __name__ == "__main__":
 	name = sys.argv[1]
-	path_list = list('../regret/' + name + '/procedimiento- ')
-	position = len(path_list) - 1
-	path_list = path_list + list('.txt')
-	print(name)
+	path_input_list = list('../regret/'   + name + '/procedimiento- ')
+	path_graph_list = list('../graficas/' + name + '/procedimiento- ')
+	pos_input = len(path_input_list) - 1
+	pos_graph = len(path_graph_list) - 1
+
+	path_input_list = path_input_list + list('.txt')
+	path_graph_list = path_graph_list + list('.png')
 	procs = ['A', 'B', 'C']
 	for i in procs:
-		path_list[position] = i
-		path = ''.join(path_list)
-		make_plot(path, i)
-	plt.show()
+		path_input_list[pos_input] = i
+		path_graph_list[pos_graph] = i
+		path_input = ''.join(path_input_list)
+		path_graph = ''.join(path_graph_list)
+		make_plot(path_input, path_graph, i)
 

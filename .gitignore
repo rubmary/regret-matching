@@ -1,8 +1,10 @@
 Eigen/
 regret/
+graficas/
 test
 normal_form
 behavorial_strategy
 blotto_game
 test_kuhn
 solve
+src/test_graphic.py
