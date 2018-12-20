@@ -40,7 +40,9 @@ class RegretMatching {
 
     double print_max_regret(  int t, ofstream &file);
 
-    void update_strategies();
+    // void update_strategies();
+
+    void update_strategies(int a1, int a2);
 
     int S1, S2;                                     // numero de acciones de cada jugador
     vector < vector <double> > regret1, regret2;    // regret condicional acumulado

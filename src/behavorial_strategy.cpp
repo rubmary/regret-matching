@@ -86,6 +86,7 @@ void get_strategy(	ifstream &file,
 	for (int i = 0; i < M; i++)
 		file >> sm2[i];
 }
+
 // N 	- numero de conjuntos de informacion del jugador 1
 // N2 	- numero de conjuntos de informacion del jugador 2
 // N 	- numero de estrategias puras del jugador 1
