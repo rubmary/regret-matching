@@ -124,6 +124,7 @@ int main(int argc, char **argv) {
 		dfs_pi(root, 1, id1, s1, i, sm1, pi, pi_actions);
 		next(s1, num1, N1);
 	}
+
 	for (int i = 0; i < M; i++) {
 		dfs_pi(root, 2, id2, s2, i, sm2, pi, pi_actions);
 		next(s2, num2, N2);
