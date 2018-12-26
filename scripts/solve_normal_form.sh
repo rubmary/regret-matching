@@ -1,10 +1,12 @@
 #!/bin/bash
 
+cd ..
 echo "Creando carpetas"
-mkdir ../regret/$1
-mkdir ../graficas/$1
-mkdir ../estrategias/mixtas/$1
-cd ../src
+mkdir regret/$1
+mkdir graficas/$1
+mkdir estrategias/mixtas/$1
+mkdir tiempos/$1
+cd src
 
 echo "Compilando programa"
 g++ -I ../ solve.cpp -o solve -std=c++11

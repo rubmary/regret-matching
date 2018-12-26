@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iomanip>
 #include "RegretMatching.cpp"
+#define REP 5
 using namespace std;
 
 void print_strategy(RegretMatching &regret_matching, 
@@ -23,20 +24,38 @@ void print_strategy(RegretMatching &regret_matching,
     file.close();
 }
 
+void print_time(vector <double> &times,
+                vector <int> &iterations,
+                string path)
+{
+    ofstream file(path.c_str());
+    int T = times.size();
+    double sum_t = 0, sum_i = 0;
+    file << T << endl;
+    for (int i = 0; i < T; i++){
+        file << times[i] << ' ' << iterations[i] << endl;
+        sum_t += times[i];
+        sum_i += iterations[i];
+    }
+    file << fixed << setprecision(3) << sum_t/T << ' ' << sum_i/T << endl;
+}
 int main(int argc, char **argv) {
-    string path_input, path_output, path_strategy;
-    path_input  = argv[1];
-    path_input  = "../juegos/forma_normal/" + path_input + ".txt";
+    string path_input, path_output, path_strategy, path_time;
 
-    path_output = argv[1];
-    path_output = "../regret/" + path_output + "/procedimiento- "; 
+    string name = argv[1];
+    path_input  = "../juegos/forma_normal/" + name + ".txt";
+
+    path_output = "../regret/" + name + "/procedimiento- ";
     int position = path_output.size() - 1;
     path_output = path_output + ".txt";
 
-    path_strategy = argv[1];
-    path_strategy = "../estrategias/mixtas/" + path_strategy + "/procedimiento- ";
+    path_strategy = "../estrategias/mixtas/" + name + "/procedimiento- ";
     int pos_strategy = path_strategy.size() - 1;
     path_strategy = path_strategy + ".txt";
+
+    path_time = "../tiempos/" + name + "/procedimiento- ";
+    int pos_time = path_time.size() - 1;
+    path_time = path_time + ".txt";
 
     ifstream file(path_input.c_str());
     vector <vector <double>> A;
@@ -49,22 +68,50 @@ int main(int argc, char **argv) {
     file.close();
 
     RegretMatching regret_matching;
-    
+    vector <double> times;
+    vector <int> its;
+    double time;
+    int iterations;
+
     cout << "Procedimiento A del juego " << argv[1] << endl;
     path_output[position] = 'A';
     path_strategy[pos_strategy] = 'A';
-    regret_matching.proc_a(A, 1000000, path_output);
+    path_time[pos_time] = 'A';
+    times.clear();
+    iterations = 1000000;
+    for (int i = 0; i < REP; i++){
+        time = regret_matching.proc_a(A, iterations, path_output);
+        times.push_back(time);
+        its.push_back(iterations);
+    }
     print_strategy(regret_matching, path_strategy, S1, S2);
+    print_time(times, its, path_time);
 
     cout << "Procedimiento B del juego " << argv[1] << endl;
     path_output[position] = 'B';
     path_strategy[pos_strategy] = 'B';
-    regret_matching.proc_b(A, 100000, path_output);
+    path_time[pos_time] = 'B';
+    times.clear();
+    iterations = 100000;
+    for (int i = 0; i < REP; i++){
+        time = regret_matching.proc_b(A, iterations, path_output);
+        times.push_back(time);
+        its.push_back(iterations);
+    }
     print_strategy(regret_matching, path_strategy, S1, S2);
+    print_time(times, its, path_time);
 
     cout << "Procedimiento C del juego " << argv[1] << endl;
     path_output[position] = 'C';
     path_strategy[pos_strategy] = 'C';
-    regret_matching.proc_c(A, 1000000, path_output);
+    path_time[pos_time] = 'C';
+    times.clear();
+    iterations = 1000000;
+    for (int i = 0; i < REP; i++) {
+        time = regret_matching.proc_c(A, iterations, path_output);
+        times.push_back(time);
+        its.push_back(iterations);
+    }
     print_strategy(regret_matching, path_strategy, S1, S2);
+    print_time(times, its, path_time);
 }

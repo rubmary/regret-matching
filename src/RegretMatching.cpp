@@ -3,8 +3,8 @@
 #include <ctime>
 #include <vector>
 #include <fstream>
+#include <chrono>
 #include <Eigen/Dense>
-#define EPS 1e-4
 using namespace Eigen;
 using namespace std;
 
@@ -132,7 +132,7 @@ void RegretMatching::get_strategy(  vector <double> &regret,
         total_regret += max(0.0, regret[k]);
     for (int k = 0; k < num_actions; k++) {
         strategy[k] = max(0.0, regret[k]);
-        if (total_regret < EPS)
+        if (total_regret < 1e-4)
             strategy[k] = 1/num_actions;
         else
             strategy[k] /= total_regret;
@@ -174,28 +174,22 @@ double RegretMatching::print_max_regret ( int t,
     return max(max_regret1/(t+1), max_regret2/(t+1));
 }
 
-// void RegretMatching::update_strategies()
-// {
-//     // Actualizar las estrategias acumuladas
-//     for (int k = 0; k < S1; k++)
-//         s1[k] += strategy1[k];
-//     for (int k = 0; k < S2; k++)
-//         s2[k] += strategy2[k];
-// }
-
 void RegretMatching::update_strategies(int i, int j)
 {
     s1[i] += 1;
     s2[j] += 1;
 }
-void RegretMatching::proc_a(    vector<vector <double>> &utility,
-                                int iterations,
-                                string name = "regret_a.txt")
+
+double RegretMatching::proc_a(  vector<vector <double>> &utility,
+                                int &iterations,
+                                string name = "regret_a.txt",
+                                double eps = 1e-4)
 {
     set(utility);
     double m = get_parameter(utility, S1, S2);
     ofstream file(name.c_str());
 
+    auto start = chrono::system_clock::now();
     int prev1 = 0, prev2 = 0;
     for (int t = 0; t < iterations; t++) {
         get_strategy(regret1, strategy1, S1, m, prev1, t+1);    // estrategia del jugador 1
@@ -208,21 +202,29 @@ void RegretMatching::proc_a(    vector<vector <double>> &utility,
         prev2 = j;                                              // estrategia previa jugador 2
         unconditional_regret(i, j, utility);                    // regret incondicional
         double max_regret = print_max_regret(t, file);          // imprimir regret en archivo
-        if (max_regret < EPS)
-           break;
+        if (max_regret < eps){
+            iterations = ++t;
+            break;
+        }
     }
+    auto end = chrono::system_clock::now();
+    chrono::duration<double> elapsed_seconds = end-start;
+
     normalize_strategy(s1, S1);                             // normalizar estrategia jugador 1
     normalize_strategy(s2, S2);                             // normalizar estrategia jugador 2
     file.close();
+    return elapsed_seconds.count();
 }
 
-void RegretMatching::proc_b(    vector<vector <double>> &utility,
-                                int iterations,
-                                string name = "regret_b.txt")
+double RegretMatching::proc_b(  vector<vector <double>> &utility,
+                                int &iterations,
+                                string name = "regret_b.txt",
+                                double eps = 1e-4)
 {
     set(utility);
     ofstream file(name.c_str());
 
+    auto start = chrono::system_clock::now();
     for (int t = 0; t < iterations; t++) {
         get_strategy(regret1, strategy1, S1, t+1);      // estrategia del jugador 1
         get_strategy(regret2, strategy2, S2, t+1);      // estrategia del jugador 2
@@ -232,21 +234,29 @@ void RegretMatching::proc_b(    vector<vector <double>> &utility,
         update_strategies(i, j);                        // actualizar las estrategias acumuladas
         unconditional_regret(i, j, utility);            // regret incondicional
         double max_regret = print_max_regret(t, file);  // imprimir regret en archivo
-        if (max_regret < EPS)
+        if (max_regret < eps){
+            iterations = ++t;
             break;
+        }
     }
+    auto end = chrono::system_clock::now();
+    chrono::duration<double> elapsed_seconds = end-start;
 
     normalize_strategy(s1, S1);                         // normalizar estrategia jugador 1
     normalize_strategy(s2, S2);                         // normalizar estrategia jugador 2
+    file.close();
+    return elapsed_seconds.count();
 }
 
-void RegretMatching::proc_c(    vector<vector <double>> &utility,
-                                int iterations,
-                                string name = "regret_c.txt")
+double RegretMatching::proc_c(  vector<vector <double>> &utility,
+                                int &iterations,
+                                string name = "regret_c.txt",
+                                double eps = 1e-4)
 {
     set(utility);
     ofstream file(name.c_str());
 
+    auto start = chrono::system_clock::now();
     for (int t = 0; t < iterations; t++) {
         get_strategy(un_regret1, strategy1, S1);            // estrategia del jugador 1
         get_strategy(un_regret2, strategy2, S2);            // estrategia del jugador 2
@@ -255,10 +265,16 @@ void RegretMatching::proc_c(    vector<vector <double>> &utility,
         unconditional_regret(i, j, utility);                // actualizar regret incondicional
         update_strategies(i, j);                            // actualizar estrategias acumuladas
         double max_regret = print_max_regret(t, file);      // imprimir regret en archivo
-        if (max_regret < EPS)
+        if (max_regret < eps){
+            iterations = ++t;
             break;
+        }
     }
+    auto end = chrono::system_clock::now();
+    chrono::duration<double> elapsed_seconds = end-start;
+
     normalize_strategy(s1, S1);                             // normalizar estrategia jugador 1
     normalize_strategy(s2, S2);                             // normalizar estrategia jugador 2
     file.close();
+    return elapsed_seconds.count();
 }

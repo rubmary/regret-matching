@@ -40,8 +40,6 @@ class RegretMatching {
 
     double print_max_regret(  int t, ofstream &file);
 
-    // void update_strategies();
-
     void update_strategies(int a1, int a2);
 
     int S1, S2;                                     // numero de acciones de cada jugador
@@ -51,17 +49,20 @@ class RegretMatching {
     vector <double> s1, s2;
 
 public:
-    void proc_a(    vector<vector <double> > &utility,
-                    int iterations,
-                    string name);
+    double proc_a(  vector<vector <double> > &utility,
+                    int &iterations,
+                    string name,
+                    double eps);
 
-    void proc_b(    vector<vector <double> > &utility,
-                    int iterations,
-                    string name);
+    double proc_b(  vector<vector <double> > &utility,
+                    int &iterations,
+                    string name,
+                    double eps);
 
-    void proc_c(    vector<vector <double> > &utility,
-                    int iterations,
-                    string name);
+    double proc_c(  vector<vector <double> > &utility,
+                    int &iterations,
+                    string name,
+                    double eps);
 
     vector <double> get_strategy(int player) {
         if (player == 1)
