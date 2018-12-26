@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iomanip>
 #include "RegretMatching.cpp"
-#define REP 5
+#define REP 10
 using namespace std;
 
 void print_strategy(RegretMatching &regret_matching, 
