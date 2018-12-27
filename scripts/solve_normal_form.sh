@@ -2,10 +2,10 @@
 
 cd ..
 echo "Creando carpetas"
-mkdir regret/$1
-mkdir graficas/$1
-mkdir estrategias/mixtas/$1
-mkdir tiempos/$1
+mkdir -p regret/$1
+mkdir -p graficas/$1
+mkdir -p estrategias/mixtas/$1
+mkdir -p tiempos/$1
 cd src
 
 echo "Compilando programa"
