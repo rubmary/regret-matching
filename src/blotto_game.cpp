@@ -24,7 +24,7 @@ int match(vector <int> P1, vector <int> P2, int N) {
     }
     return p1 - p2;
 }
-int com(int n, int m) {
+int c(int n, int m) {
     int ans = 1;
     for (int k = 0; k < m; k++)
         ans *= (n-k);
@@ -35,7 +35,7 @@ int com(int n, int m) {
 int main() {
     int N, S;
     cin >> N >> S;
-    int M = com(S + N -1, N-1);
+    int M = c(S + N -1, N-1);
     cout << M << ' ' << M << endl;
     vector <int> P1(N, 0), P2(N, 0);
     P1[N-1] = S;
