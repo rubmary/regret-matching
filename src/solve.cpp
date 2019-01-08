@@ -39,7 +39,10 @@ void print_time(vector <double> &times,
     }
     file << fixed << setprecision(3) << sum_t/T << ' ' << sum_i/T << endl;
 }
+
 int main(int argc, char **argv) {
+
+    double eps = stod(argv[2]);
     string path_input, path_output, path_strategy, path_time;
 
     string name = argv[1];
@@ -78,9 +81,10 @@ int main(int argc, char **argv) {
     path_strategy[pos_strategy] = 'A';
     path_time[pos_time] = 'A';
     times.clear();
-    iterations = 1000000;
+    its.clear();
+    iterations = 0;
     for (int i = 0; i < REP; i++){
-        time = regret_matching.proc_a(A, iterations, path_output);
+        time = regret_matching.proc_a(A, iterations, path_output, eps);
         times.push_back(time);
         its.push_back(iterations);
     }
@@ -92,9 +96,10 @@ int main(int argc, char **argv) {
     path_strategy[pos_strategy] = 'B';
     path_time[pos_time] = 'B';
     times.clear();
-    iterations = 100000;
+    its.clear();
+    iterations = 0;
     for (int i = 0; i < REP; i++){
-        time = regret_matching.proc_b(A, iterations, path_output);
+        time = regret_matching.proc_b(A, iterations, path_output, eps);
         times.push_back(time);
         its.push_back(iterations);
     }
@@ -106,12 +111,14 @@ int main(int argc, char **argv) {
     path_strategy[pos_strategy] = 'C';
     path_time[pos_time] = 'C';
     times.clear();
-    iterations = 1000000;
+    its.clear();
+    iterations = 0;
     for (int i = 0; i < REP; i++) {
-        time = regret_matching.proc_c(A, iterations, path_output);
+        time = regret_matching.proc_c(A, iterations, path_output, eps);
         times.push_back(time);
         its.push_back(iterations);
     }
+
     print_strategy(regret_matching, path_strategy, S1, S2);
     print_time(times, its, path_time);
 }
