@@ -12,7 +12,7 @@ echo "Compilando programa"
 g++ -I ../ solve.cpp -o solve -std=c++11
 
 echo "Corriendo regret matching"
-./solve $1
+./solve $1 0.005
 
 echo "Creando graficas"
 python graphics.py $1
