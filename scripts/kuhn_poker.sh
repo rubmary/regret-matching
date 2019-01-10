@@ -1,6 +1,10 @@
 #!/bin/bash
 
-cd ../src/
+cd ../
+echo "Creando carpeta"
+mkdir -p regret/kuhn
+cd src/
+
 echo "Compilando los programas"
 g++ normal_form.cpp -o normal_form -std=c++11
 g++ behavorial_strategy.cpp -o behavorial_strategy -std=c++11
@@ -16,7 +20,7 @@ echo "Creando la forma normal del juego"
 ./normal_form  $TREE > $NORMAL_FORM
 
 echo "Ejecutando el algoritmo de regret matching"
-./test_kuhn > $MIX_ST
+./test_kuhn $MIX_ST 0.00005
 
 echo "Creando la estrategia de comportamiento"
 ./behavorial_strategy $TREE $MIX_ST > $BEH_ST
