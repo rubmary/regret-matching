@@ -44,7 +44,7 @@ void print_time(vector <double> &times,
 int main(int argc, char **argv) {
 
     int seed = time(NULL);
-    cout << seed;
+    cout << "Seed: " << seed << endl;
     srand(seed);
     double eps = stod(argv[2]);
     string path_input, path_output, path_strategy, path_time;
