@@ -1,12 +1,20 @@
 import matplotlib.pylab as plt
 import sys
+MAX_VAL = 2e7
 
 def make_plot(path_input, path_graph, proc, name):
     file = open(path_input)
-    lines = file.readlines()
+    i = 0
+    regret1 = []
+    regret2 = []
+    while i < MAX_VAL:
+        line = file.readline()
+        if not line:
+            break
+        regret1.append(float(line.split()[0]))
+        regret2.append(float(line.split()[1]))
+        i = i+1
     file.close()
-    regret1 = [float(lines[i].split()[0]) for i in range(len(lines))]
-    regret2 = [float(lines[i].split()[1]) for i in range(len(lines))]
     plt.figure()
     plt.title('Procedimiento ' + proc + ': ' + name)
     plt.xscale('log')
