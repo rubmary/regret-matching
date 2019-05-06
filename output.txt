@@ -1,0 +1,47 @@
+Compilando domino y blotto_game
+Creando input para domino y blotto_game
+Eliminando programas
+Resolviendo juegos
+Resolviendo el juego:  matching_pennies
+Creando carpetas
+Compilando programa
+Corriendo regret matching
+Seed: 1557163769
+Procedimiento A del juego matching_pennies
+Procedimiento B del juego matching_pennies
+Procedimiento C del juego matching_pennies
+Creando graficas
+Eliminando programa
+ 
+Resolviendo el juego:  RPS
+Creando carpetas
+Compilando programa
+Corriendo regret matching
+Seed: 1557163896
+Procedimiento A del juego RPS
+Procedimiento B del juego RPS
+Procedimiento C del juego RPS
+Creando graficas
+Eliminando programa
+ 
+Resolviendo el juego:  domino
+Creando carpetas
+Compilando programa
+Corriendo regret matching
+Seed: 1557164035
+Procedimiento A del juego domino
+Procedimiento B del juego domino
+Procedimiento C del juego domino
+Creando graficas
+Eliminando programa
+ 
+Resolviendo el juego:  blotto_game
+Creando carpetas
+Compilando programa
+Corriendo regret matching
+Seed: 1557167400
+Procedimiento A del juego blotto_game
+Procedimiento B del juego blotto_game
+Procedimiento C del juego blotto_game
+Creando graficas
+Eliminando programa
