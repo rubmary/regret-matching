@@ -2,9 +2,9 @@
 regret/
 # graficas/
 # estrategias/mixtas
-test
-normal_form
-behavorial_strategy
-blotto_game
-test_kuhn
-solve
+src/test
+src/normal_form
+src/behavorial_strategy
+src/blotto_game
+src/test_kuhn
+src/solve
