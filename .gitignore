@@ -8,3 +8,5 @@ src/behavorial_strategy
 src/blotto_game
 src/test_kuhn
 src/solve
+src/utility
+src/make_table
