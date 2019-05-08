@@ -39,9 +39,10 @@ if __name__ == "__main__":
                 'Vector invariante de probabilidad',
                 'Regret incondicional']
     for i in range(3):
+        if(name == "kuhn" and i < 2):
+            continue
         path_input_list[pos_input] = procs[i]
         path_graph_list[pos_graph] = procs[i]
         path_input = ''.join(path_input_list)
         path_graph = ''.join(path_graph_list)
         make_plot(path_input, path_graph, procs[i], names[i])
-

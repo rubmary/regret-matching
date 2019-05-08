@@ -25,6 +25,7 @@ void print_strategy(RegretMatching &regret_matching,
 }
 
 int main(int argc, char **argv) {
+    srand(time(NULL));
     string path_regret = argv[1];
     double eps = stod(argv[2]);
     ifstream file("../juegos/forma_normal/tree_kuhn.txt");
@@ -38,8 +39,9 @@ int main(int argc, char **argv) {
 
     RegretMatching regret_matching;
     int iterations = 0;
-    string path = "../regret/kuhn/regret.txt";
+    string path = "../regret/kuhn/procedimiento-C.txt";
     double time = regret_matching.proc_c(A, iterations, path, eps);
     print_strategy(regret_matching, path_regret, S1, S2);
-    cout << time << ' ' << iterations << endl;
+    cout << "time = " << time << endl;
+    cout << "iterations = " << iterations << endl;
 }

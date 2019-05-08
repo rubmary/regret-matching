@@ -3,6 +3,7 @@
 cd ../
 echo "Creando carpeta"
 mkdir -p regret/kuhn
+mkdir -p graficas/kuhn
 cd src/
 
 echo "Compilando los programas"
@@ -20,7 +21,11 @@ echo "Creando la forma normal del juego"
 ./normal_form  $TREE > $NORMAL_FORM
 
 echo "Ejecutando el algoritmo de regret matching"
-./test_kuhn $MIX_ST 0.00005
+./test_kuhn $MIX_ST 0.00001
+
+echo "Creando la grafica del regret"
+python graphics.py kuhn
+
 
 echo "Creando la estrategia de comportamiento"
 ./behavorial_strategy $TREE $MIX_ST > $BEH_ST
