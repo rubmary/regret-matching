@@ -2,6 +2,9 @@ import matplotlib.pylab as plt
 import sys
 MAX_VAL = 2e7
 
+BIGGER_SIZE = 20
+FONT_SIZE = 15
+SMALL_SIZE = 12
 def make_plot(path_input, path_graph, proc, name):
     file = open(path_input)
     i = 0
@@ -15,14 +18,17 @@ def make_plot(path_input, path_graph, proc, name):
         regret2.append(float(line.split()[1]))
         i = i+1
     file.close()
+    plt.rc('font', size=BIGGER_SIZE, family='serif')
     plt.figure()
-    plt.title('Procedimiento ' + proc + ': ' + name)
+    plt.title(proc + ': ' + name)
     plt.xscale('log')
     plt.plot(regret1, label='Jugador 1')
     plt.plot(regret2, label='Jugador 2')
-    plt.ylabel('Regret (max)')
+    if (proc == 'A'):
+        plt.ylabel('Regret (max)')
     plt.xlabel('Iteraciones')
     plt.legend()
+    plt.subplots_adjust(bottom=0.15, left=0.15, right=0.85)
     plt.savefig(path_graph)
 
 if __name__ == "__main__":

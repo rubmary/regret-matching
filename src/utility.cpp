@@ -55,13 +55,14 @@ int main(int argc, char **argv) {
                 v += A[i][j]*s2[j];
             v2 = max(v2, v);
         }
+        v1 = -v1;
         cout << "Procedimiento " + procs[i] + ": v1 v2 = ";
-        cout << fixed << setprecision(7) << v1 << ' ' << -v2 << endl;
+        cout << fixed << setprecision(7) << v1 << ' ' << v2 << endl;
+        cout << "e = " << v1 + v2 << endl;
+        double u = 0;
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < M; j++)
+                u += A[i][j]*s1[i]*s2[j];
+        cout << "u = " << u << endl;
     }
-
-    double u = 0;
-    for (int i = 0; i < N; i++)
-        for (int j = 0; j < M; j++)
-            u += A[i][j]*s1[i]*s2[j];
-    cout << "u = " << u << endl;
 }
