@@ -13,7 +13,6 @@ rm domino blotto_game input_blotto.txt
 cd ../scripts
 echo "Resolviendo juegos"
 gameList='matching_pennies RPS domino blotto_game'
-# gameList='blotto_game'
 for name in $gameList; do
 	echo 'Resolviendo el juego: ' $name
 	./solve_normal_form.sh $name
