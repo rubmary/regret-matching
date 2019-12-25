@@ -10,7 +10,7 @@ string proc(string x) {
 }
 
 int total_procs = 3;
-string separator = "$ & $";
+string separator = " & ";
 
 int main(int argc, char **argv) {
     string game_name = argv[1];
@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
         for (int j = 0; j < total_procs; j++) {
             files[j] >> time >> iterations;
             ratio = time/iterations;
-            cout << fixed << setprecision(3) << '$' << time << separator;
+            cout << fixed << setprecision(3) << time << separator;
             int precision = (i == rep) ? 1 : 0;
             cout << fixed << setprecision(precision) << iterations << separator;
             ostringstream stream;
@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
             format_ratio = stream.str();
             int len = format_ratio.size();
             string format_ratio2 = format_ratio.substr(0, 4) + " {\\times} 10^{" + format_ratio.substr(5, len-5) + '}';
-            cout << scientific << setprecision(2) << format_ratio2 << "$ " << (j == total_procs - 1 ? "\\\\" : "& ");
+            cout << scientific << setprecision(2) << "$" << format_ratio2 << "$ " << (j == total_procs - 1 ? "\\\\" : "& ");
         }
         cout << ((i >= rep-1) ? " \\hline" : "") << endl;
     }
