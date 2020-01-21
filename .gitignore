@@ -3,10 +3,7 @@ regret/
 # graficas/
 # estrategias/mixtas
 src/test
-src/normal_form
-src/behavorial_strategy
 src/blotto_game
-src/test_kuhn
 src/solve
 src/utility
 src/make_table
